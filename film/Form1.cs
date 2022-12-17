@@ -11,17 +11,15 @@ namespace film
         {
             InitializeComponent();
         }
+      
         #region connexion 
         static string Chaine = @"Data Source=DESKTOP-H5O83VN\SQLEXPRESS;Initial Catalog=FILM;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"; 
-
-
         static SqlConnection cnx = new SqlConnection(Chaine);
         static SqlCommand cmd = new SqlCommand();
         static SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-
         #endregion
 
-        private void log_in_btn_Click(object sender, EventArgs e)
+        public void log_in_btn_Click(object sender, EventArgs e)
         {
 
            
@@ -32,16 +30,21 @@ namespace film
             cmd.Connection = cnx;
             cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email.Text.ToString();
-                cmd.Parameters.Add("@password", SqlDbType.NVarChar).Value = password.Text.ToString();
+                cmd.Parameters.Add("@Password", SqlDbType.NVarChar).Value = password.Text.ToString();
                 SqlDataReader dr = cmd.ExecuteReader();
 
             if (dr.Read())
             {
-                MessageBox.Show("Login sucessful");
+                
+                movies movies = new movies();
+                movies.Show();
+                this.Visible = false;
+              
             }
             else
             {
                 MessageBox.Show("login failed");
+                
             }
 
             cnx.Close();
